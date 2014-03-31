@@ -6,33 +6,33 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	0.1.0
-%define	snap	20131016
-Release:	0.%{snap}.1
+Version:	0.3.2
+Release:	1
 License:	MIT
 Group:		Libraries
-Source0:	https://github.com/tatsuhiro-t/nghttp2/archive/master/%{name}-%{snap}.tar.gz
-# Source0-md5:	95b817bc5fb09c75c66853fb44ce7f86
-Patch0:		%{name}-test.patch
+Source0:	https://github.com/tatsuhiro-t/nghttp2/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	0e125fb8a377aab1f29df675828807c8
 URL:		https://github.com/tatsuhiro-t/nghttp2
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
+%{?with_tests:BuildRequires:	jansson-devel >= 2.5}
 BuildRequires:	libevent-devel >= 2.0.8
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	libxml2-devel >= 1:2.7.7
 BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
-BuildRequires:	python >= 1:2.6
-BuildRequires:	spdylay-devel >= 1.0.0
+BuildRequires:	python >= 1:2.7
+BuildRequires:	python-Cython
+BuildRequires:	spdylay-devel >= 1.2.3
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
 Requires:	libevent >= 2.0.8
 Requires:	libxml2 >= 1:2.7.7
 Requires:	openssl >= 1.0.1
-Requires:	spdylay >= 1.0.0
+Requires:	spdylay >= 1.2.3
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -69,9 +69,21 @@ Static libnghttp2 library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libnghttp2.
 
+%package -n python-nghttp2
+Summary:	Python binding to nghttp2 library
+Summary(pl.UTF-8):	Wiązanie Pythona do biblioteki nghttp2
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+Requires:	python-libs >= 1:2.7
+
+%description -n python-nghttp2
+Python binding to nghttp2 library.
+
+%description -n python-nghttp2 -l pl.UTF-8
+Wiązanie Pythona do biblioteki nghttp2.
+
 %prep
-%setup -q -n %{name}-master
-%patch0 -p1
+%setup -q
 
 %build
 %{__libtoolize}
@@ -94,6 +106,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/nghttp2.la \
+	%{?with_static_libs:$RPM_BUILD_ROOT%{py_sitedir}/nghttp2.a}
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libnghttp2.la
 # packaged as %doc
@@ -108,11 +122,16 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING README.rst
+%attr(755,root,root) %{_bindir}/deflatehd
+%attr(755,root,root) %{_bindir}/inflatehd
 %attr(755,root,root) %{_bindir}/nghttp
 %attr(755,root,root) %{_bindir}/nghttpd
 %attr(755,root,root) %{_bindir}/nghttpx
 %attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.0
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.2
+%{_mandir}/man1/nghttp.1*
+%{_mandir}/man1/nghttpd.1*
+%{_mandir}/man1/nghttpx.1*
 
 %files devel
 %defattr(644,root,root,755)
@@ -125,3 +144,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %{_libdir}/libnghttp2.a
 %endif
+
+%files -n python-nghttp2
+%defattr(644,root,root,755)
+%attr(755,root,root) %{py_sitedir}/nghttp2.so
