@@ -6,12 +6,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	0.3.2
+Version:	0.4.0
 Release:	1
 License:	MIT
 Group:		Libraries
-Source0:	https://github.com/tatsuhiro-t/nghttp2/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	0e125fb8a377aab1f29df675828807c8
+#Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
+Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	ae6f5ebe15bd461893d220662575bad6
 URL:		https://github.com/tatsuhiro-t/nghttp2
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
@@ -92,6 +93,7 @@ Wiązanie Pythona do biblioteki nghttp2.
 %{__autoheader}
 %{__automake}
 %configure \
+	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static}
 
 %{__make}
@@ -106,8 +108,6 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{py_sitedir}/nghttp2.la \
-	%{?with_static_libs:$RPM_BUILD_ROOT%{py_sitedir}/nghttp2.a}
 # obsoleted by pkg-config
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/libnghttp2.la
 # packaged as %doc
@@ -123,12 +123,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING README.rst
 %attr(755,root,root) %{_bindir}/deflatehd
+%attr(755,root,root) %{_bindir}/h2load
 %attr(755,root,root) %{_bindir}/inflatehd
 %attr(755,root,root) %{_bindir}/nghttp
 %attr(755,root,root) %{_bindir}/nghttpd
 %attr(755,root,root) %{_bindir}/nghttpx
 %attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.2
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.3
+%{_mandir}/man1/h2load.1*
 %{_mandir}/man1/nghttp.1*
 %{_mandir}/man1/nghttpd.1*
 %{_mandir}/man1/nghttpx.1*
@@ -148,3 +150,4 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python-nghttp2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/nghttp2.so
+%{py_sitedir}/python_nghttp2-0.0.0-py*.egg-info
