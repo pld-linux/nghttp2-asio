@@ -6,13 +6,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	0.5.0
+Version:	0.6.1
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
 Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	7eb82c4d113c13c526249c3941b8b411
+# Source0-md5:	f0340b678e0d5eef107b66837c014e37
 URL:		https://github.com/tatsuhiro-t/nghttp2
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
@@ -26,7 +26,7 @@ BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python >= 1:2.7
 BuildRequires:	python-Cython
-BuildRequires:	spdylay-devel >= 1.2.3
+BuildRequires:	spdylay-devel >= 1.3.0
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
@@ -34,7 +34,7 @@ Requires:	jansson >= 2.5
 Requires:	libevent >= 2.0.8
 Requires:	libxml2 >= 1:2.7.7
 Requires:	openssl >= 1.0.1
-Requires:	spdylay >= 1.2.3
+Requires:	spdylay >= 1.3.0
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -130,7 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/nghttpd
 %attr(755,root,root) %{_bindir}/nghttpx
 %attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.4
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.5
 %{_mandir}/man1/h2load.1*
 %{_mandir}/man1/nghttp.1*
 %{_mandir}/man1/nghttpd.1*
@@ -151,4 +151,4 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python-nghttp2
 %defattr(644,root,root,755)
 %attr(755,root,root) %{py_sitedir}/nghttp2.so
-%{py_sitedir}/python_nghttp2-0.0.0-py*.egg-info
+%{py_sitedir}/python_nghttp2-%{version}-py*.egg-info
