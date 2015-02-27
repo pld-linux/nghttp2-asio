@@ -1,0 +1,10 @@
+--- nghttp2-0.7.5/src/Makefile.am.orig	2015-02-26 16:58:47.000000000 +0100
++++ nghttp2-0.7.5/src/Makefile.am	2015-02-26 22:09:06.105022216 +0100
+@@ -189,6 +189,6 @@
+ 	${BOOST_ASIO_LIB} \
+ 	${BOOST_THREAD_LIB} \
+ 	${BOOST_SYSTEM_LIB} \
+-	@OPENSSL_LIBS@
++	@OPENSSL_LIBS@ -lpthread
+ 
+ endif # ENABLE_ASIO_LIB
