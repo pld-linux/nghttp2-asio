@@ -7,13 +7,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	0.7.5
+Version:	0.7.9
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
 Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	d89aa34f33ac285be541198f287b77cb
+# Source0-md5:	ceee5061f556c0f6fce9025fce77d8c4
 Patch0:		%{name}-link.patch
 URL:		https://github.com/tatsuhiro-t/nghttp2
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
@@ -213,12 +213,14 @@ rm -rf $RPM_BUILD_ROOT
 %files asio
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libnghttp2_asio.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2_asio.so.0
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2_asio.so.1
 
 %files asio-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libnghttp2_asio.so
 %{_includedir}/nghttp2/asio_http2.h
+%{_includedir}/nghttp2/asio_http2_client.h
+%{_includedir}/nghttp2/asio_http2_server.h
 %{_pkgconfigdir}/libnghttp2_asio.pc
 
 %if %{with static_libs}
