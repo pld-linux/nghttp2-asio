@@ -7,13 +7,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	0.7.9
-Release:	2
+Version:	1.0.4
+Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
 Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	ceee5061f556c0f6fce9025fce77d8c4
+# Source0-md5:	3755757c75e3e1536f8d9adeb8a649dc
 Patch0:		%{name}-link.patch
 URL:		https://github.com/tatsuhiro-t/nghttp2
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
@@ -30,7 +30,8 @@ BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python >= 1:2.7
 BuildRequires:	python-Cython
-BuildRequires:	spdylay-devel >= 1.3.0
+BuildRequires:	sed >= 4.0
+BuildRequires:	spdylay-devel >= 1.3.2
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
@@ -38,7 +39,7 @@ Requires:	jansson >= 2.5
 Requires:	libevent >= 2.0.8
 Requires:	libxml2 >= 1:2.7.7
 Requires:	openssl >= 1.0.1
-Requires:	spdylay >= 1.3.0
+Requires:	spdylay >= 1.3.2
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -134,6 +135,8 @@ Statyczna biblioteka libnghttp2_asio.
 %setup -q
 %patch0 -p1
 
+%{__sed} -i -e '1s,/usr/bin/env python,%{__python},' script/fetch-ocsp-response
+
 %build
 %{__libtoolize}
 %{__aclocal} -I m4
@@ -185,7 +188,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/nghttpd
 %attr(755,root,root) %{_bindir}/nghttpx
 %attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.5
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.14
+%dir %{_datadir}/nghttp2
+%attr(755,root,root) %{_datadir}/nghttp2/fetch-ocsp-response
 %{_mandir}/man1/h2load.1*
 %{_mandir}/man1/nghttp.1*
 %{_mandir}/man1/nghttpd.1*
