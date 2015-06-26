@@ -30,6 +30,8 @@ BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python >= 1:2.7
 BuildRequires:	python-Cython
+BuildRequires:	python-setuptools
+BuildRequires:	rpm-pythonprov
 BuildRequires:	sed >= 4.0
 BuildRequires:	spdylay-devel >= 1.3.2
 BuildRequires:	tar >= 1:1.22
