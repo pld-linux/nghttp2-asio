@@ -7,13 +7,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.10.0
+Version:	1.11.1
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
 Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	4adcd91018f05c9042bb7ddbe8f93e76
+# Source0-md5:	22b3a70df7a0bb3a734b2d44973f1a0c
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
 URL:		https://github.com/tatsuhiro-t/nghttp2
