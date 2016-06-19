@@ -8,7 +8,7 @@ Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
 Version:	1.11.1
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
@@ -38,12 +38,7 @@ BuildRequires:	spdylay-devel >= 1.3.2
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
-Requires:	jansson >= 2.5
-Requires:	libevent >= 2.0.8
-Requires:	libxml2 >= 1:2.7.7
-Requires:	openssl >= 1.0.1
-Requires:	spdylay >= 1.3.2
-Requires:	zlib >= 1.2.3
+Requires:	%{name}-libs = %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # non-function symbols std::__once_call, std::__once_callable
@@ -57,11 +52,26 @@ version 2.0.
 Ta biblioteka jest eksperymentalną implementacją protokołu HTTP
 (Hypertext Transfer Protocol) w wersji 2.0.
 
+%package libs
+Summary:	A library implementing the HTTP/2 protocol
+Group:		Libraries
+Requires:	jansson >= 2.5
+Requires:	libevent >= 2.0.8
+Requires:	libxml2 >= 1:2.7.7
+Requires:	openssl >= 1.0.1
+Requires:	spdylay >= 1.3.2
+Requires:	zlib >= 1.2.3
+Conflicts:	nghttp2 < 1.11.1-2
+
+%description libs
+libnghttp2 is a library implementing the Hypertext Transfer Protocol
+version 2 (HTTP/2) protocol in C.
+
 %package devel
 Summary:	Files needed for developing with libnghttp2
 Summary(pl.UTF-8):	Pliki niezbędne do tworzenia aplikacji z użyciem libnghttp2
 Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	zlib-devel >= 1.2.3
 
 %description devel
@@ -99,7 +109,7 @@ Wiązanie Pythona do biblioteki nghttp2.
 Summary:	HTTP/2.0 C++ library
 Summary(pl.UTF-8):	Biblioteka C++ HTTP/2.0
 Group:		Libraries
-Requires:	%{name} = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 Requires:	openssl >= 1.0.1
 
 %description asio
@@ -176,8 +186,8 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post	libs -p /sbin/ldconfig
+%postun	libs -p /sbin/ldconfig
 
 %post	asio -p /sbin/ldconfig
 %postun	asio -p /sbin/ldconfig
@@ -191,14 +201,17 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/nghttp
 %attr(755,root,root) %{_bindir}/nghttpd
 %attr(755,root,root) %{_bindir}/nghttpx
-%attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.14
 %dir %{_datadir}/nghttp2
 %attr(755,root,root) %{_datadir}/nghttp2/fetch-ocsp-response
 %{_mandir}/man1/h2load.1*
 %{_mandir}/man1/nghttp.1*
 %{_mandir}/man1/nghttpd.1*
 %{_mandir}/man1/nghttpx.1*
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libnghttp2.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libnghttp2.so.14
 
 %files devel
 %defattr(644,root,root,755)
