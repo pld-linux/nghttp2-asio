@@ -7,16 +7,16 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.11.1
-Release:	2
+Version:	1.12.0
+Release:	1
 License:	MIT
 Group:		Libraries
-#Source0Download: https://github.com/tatsuhiro-t/nghttp2/releases
-Source0:	https://github.com/tatsuhiro-t/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	22b3a70df7a0bb3a734b2d44973f1a0c
+#Source0Download: https://github.com/nghttp2/nghttp2/releases
+Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	1cea28d8c1c1b7de81444658ae327600
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
-URL:		https://github.com/tatsuhiro-t/nghttp2
+URL:		https://nghttp2.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
@@ -54,6 +54,7 @@ Ta biblioteka jest eksperymentalną implementacją protokołu HTTP
 
 %package libs
 Summary:	A library implementing the HTTP/2 protocol
+Summary(pl.UTF-8):	Biblioteka implementująca protokół HTTP/2
 Group:		Libraries
 Requires:	jansson >= 2.5
 Requires:	libevent >= 2.0.8
@@ -66,6 +67,10 @@ Conflicts:	nghttp2 < 1.11.1-2
 %description libs
 libnghttp2 is a library implementing the Hypertext Transfer Protocol
 version 2 (HTTP/2) protocol in C.
+
+%description libs -l pl.UTF-8
+libnghttp2 to napisana w C biblioteka implementująca protokół HTTP/2
+(Hypertext Transfer Protocol w wersji 2).
 
 %package devel
 Summary:	Files needed for developing with libnghttp2
