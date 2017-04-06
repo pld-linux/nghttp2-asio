@@ -1,19 +1,20 @@
 #
 # Conditional build:
 %bcond_without	asio		# libnghttp2_asio C++ library
+%bcond_without	spdy		# SPDY support via spdylay
 %bcond_without	static_libs	# static libraries
 %bcond_without	tests		# "make check" call
 
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.14.0
+Version:	1.21.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
 Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	e9f313abcc9d8e29093f196aeb4aaa2c
+# Source0-md5:	8d5cd7090d58692e7156c67955694003
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
 URL:		https://nghttp2.org/
@@ -21,8 +22,10 @@ URL:		https://nghttp2.org/
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 %{?with_asio:BuildRequires:	boost-devel >= 1.54.0}
+BuildRequires:	c-ares-devel >= 1.7.5
 BuildRequires:	jansson-devel >= 2.5
 BuildRequires:	libev-devel
+# for examples
 BuildRequires:	libevent-devel >= 2.0.8
 BuildRequires:	libstdc++-devel >= 6:4.3
 BuildRequires:	libtool >= 2:2.2.6
@@ -30,15 +33,25 @@ BuildRequires:	libxml2-devel >= 1:2.7.7
 BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python >= 1:2.7
-BuildRequires:	python-Cython
+BuildRequires:	python-Cython >= 0.19
+BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	sed >= 4.0
-BuildRequires:	spdylay-devel >= 1.3.2
+%{?with_spdy:BuildRequires:	spdylay-devel >= 1.3.2}
+BuildRequires:	systemd-devel >= 1:209
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	c-ares >= 1.7.5
+Requires:	jansson >= 2.5
+# noinst examples only
+#Requires:	libevent >= 2.0.8
+Requires:	libxml2 >= 1:2.7.7
+Requires:	openssl >= 1.0.1
+%{?with_spdy:Requires:	spdylay >= 1.3.2}
+Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # non-function symbols std::__once_call, std::__once_callable
@@ -56,12 +69,6 @@ Ta biblioteka jest eksperymentalną implementacją protokołu HTTP
 Summary:	A library implementing the HTTP/2 protocol
 Summary(pl.UTF-8):	Biblioteka implementująca protokół HTTP/2
 Group:		Libraries
-Requires:	jansson >= 2.5
-Requires:	libevent >= 2.0.8
-Requires:	libxml2 >= 1:2.7.7
-Requires:	openssl >= 1.0.1
-Requires:	spdylay >= 1.3.2
-Requires:	zlib >= 1.2.3
 Conflicts:	nghttp2 < 1.11.1-2
 
 %description libs
@@ -77,7 +84,6 @@ Summary:	Files needed for developing with libnghttp2
 Summary(pl.UTF-8):	Pliki niezbędne do tworzenia aplikacji z użyciem libnghttp2
 Group:		Development/Libraries
 Requires:	%{name}-libs = %{version}-%{release}
-Requires:	zlib-devel >= 1.2.3
 
 %description devel
 Files needed for building applications with libnghttp2.
@@ -169,7 +175,8 @@ Statyczna biblioteka libnghttp2_asio.
 	--enable-python-bindings \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static} \
-	--without-jemalloc
+	--without-jemalloc \
+	%{?with_spdy:--with-spdylay}
 
 %{__make}
 
