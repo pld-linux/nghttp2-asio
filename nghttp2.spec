@@ -1,3 +1,4 @@
+# TODO: mruby, neverbleed?
 #
 # Conditional build:
 %bcond_without	asio		# libnghttp2_asio C++ library
@@ -8,13 +9,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.22.0
+Version:	1.27.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
 Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	99d7d2c8073be8dd8801e453a4307037
+# Source0-md5:	90d1b66256b9040ce060df359408ba1a
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
 URL:		https://nghttp2.org/
@@ -29,7 +30,7 @@ BuildRequires:	libev-devel
 BuildRequires:	libevent-devel >= 2.0.8
 BuildRequires:	libstdc++-devel >= 6:4.3
 BuildRequires:	libtool >= 2:2.2.6
-BuildRequires:	libxml2-devel >= 1:2.7.7
+BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python >= 1:2.7
@@ -48,7 +49,7 @@ Requires:	c-ares >= 1.7.5
 Requires:	jansson >= 2.5
 # noinst examples only
 #Requires:	libevent >= 2.0.8
-Requires:	libxml2 >= 1:2.7.7
+Requires:	libxml2 >= 1:2.6.26
 Requires:	openssl >= 1.0.1
 %{?with_spdy:Requires:	spdylay >= 1.3.2}
 Requires:	zlib >= 1.2.3
