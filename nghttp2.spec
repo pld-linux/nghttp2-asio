@@ -2,20 +2,19 @@
 #
 # Conditional build:
 %bcond_without	asio		# libnghttp2_asio C++ library
-%bcond_without	spdy		# SPDY support via spdylay
 %bcond_without	static_libs	# static libraries
 %bcond_without	tests		# "make check" call
 
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.27.0
+Version:	1.31.1
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
 Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	90d1b66256b9040ce060df359408ba1a
+# Source0-md5:	d69ce8dd5a1a3ecf39f9410144b0155f
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
 URL:		https://nghttp2.org/
@@ -39,7 +38,6 @@ BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	sed >= 4.0
-%{?with_spdy:BuildRequires:	spdylay-devel >= 1.3.2}
 BuildRequires:	systemd-devel >= 1:209
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -51,7 +49,6 @@ Requires:	jansson >= 2.5
 #Requires:	libevent >= 2.0.8
 Requires:	libxml2 >= 1:2.6.26
 Requires:	openssl >= 1.0.1
-%{?with_spdy:Requires:	spdylay >= 1.3.2}
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -176,8 +173,7 @@ Statyczna biblioteka libnghttp2_asio.
 	--enable-python-bindings \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static} \
-	--without-jemalloc \
-	%{?with_spdy:--with-spdylay}
+	--without-jemalloc
 
 %{__make}
 
