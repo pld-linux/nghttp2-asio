@@ -37,6 +37,7 @@ BuildRequires:	python-Cython >= 0.19
 BuildRequires:	python-devel >= 1:2.7
 BuildRequires:	python-setuptools
 BuildRequires:	rpm-pythonprov
+BuildRequires:	rpmbuild(macros) >= 1.734
 BuildRequires:	sed >= 4.0
 BuildRequires:	systemd-devel >= 1:209
 BuildRequires:	tar >= 1:1.22
@@ -51,9 +52,6 @@ Requires:	libxml2 >= 1:2.6.26
 Requires:	openssl >= 1.0.1
 Requires:	zlib >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-# non-function symbols std::__once_call, std::__once_callable
-%define		skip_post_check_so	libnghttp2_asio.so.*
 
 %description
 This is an experimental implementation of Hypertext Transfer Protocol
