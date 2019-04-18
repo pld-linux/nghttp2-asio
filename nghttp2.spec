@@ -9,7 +9,7 @@ Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
 Version:	1.37.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
@@ -17,6 +17,7 @@ Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name
 # Source0-md5:	dc7536d02aa7d4883c20eaf637747381
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
+Patch2:		%{name}-boost-1.70.patch
 URL:		https://nghttp2.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
@@ -155,6 +156,7 @@ Statyczna biblioteka libnghttp2_asio.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env python,%{__python},' script/fetch-ocsp-response
 
