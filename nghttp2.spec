@@ -8,16 +8,15 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.38.0
+Version:	1.39.1
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
 Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	45b47086ee6da8171e11887c1665f275
+# Source0-md5:	02b015cb178c46f27dd87228e33db35f
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
-Patch2:		%{name}-boost-1.70.patch
 URL:		https://nghttp2.org/
 %{?with_tests:BuildRequires:	CUnit >= 2.1}
 BuildRequires:	autoconf >= 2.61
@@ -28,7 +27,7 @@ BuildRequires:	jansson-devel >= 2.5
 BuildRequires:	libev-devel
 # for examples
 BuildRequires:	libevent-devel >= 2.0.8
-BuildRequires:	libstdc++-devel >= 6:4.3
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	openssl-devel >= 1.0.1
@@ -132,7 +131,7 @@ Summary(pl.UTF-8):	Plik nagłówkowy biblioteki nghttp2_asio
 Group:		Development/Libraries
 Requires:	%{name}-asio = %{version}-%{release}
 Requires:	%{name}-devel = %{version}-%{release}
-Requires:	libstdc++-devel
+Requires:	libstdc++-devel >= 6:4.7
 
 %description asio-devel
 Header file for nghttp2_asio library.
@@ -156,7 +155,6 @@ Statyczna biblioteka libnghttp2_asio.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 %{__sed} -i -e '1s,/usr/bin/env python,%{__python},' script/fetch-ocsp-response
 
