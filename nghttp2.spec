@@ -8,13 +8,13 @@
 Summary:	HTTP/2.0 C library
 Summary(pl.UTF-8):	Biblioteka C HTTP/2.0
 Name:		nghttp2
-Version:	1.42.0
+Version:	1.43.0
 Release:	1
 License:	MIT
 Group:		Libraries
 #Source0Download: https://github.com/nghttp2/nghttp2/releases
 Source0:	https://github.com/nghttp2/nghttp2/releases/download/v%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	c38f1d230af8cec480ff9dd60c9e0db0
+# Source0-md5:	c1d607bf3830000acd7a51f0058f4bd2
 Patch0:		%{name}-link.patch
 Patch1:		%{name}-python.patch
 URL:		https://nghttp2.org/
@@ -32,10 +32,10 @@ BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	libxml2-devel >= 1:2.6.26
 BuildRequires:	openssl-devel >= 1.0.1
 BuildRequires:	pkgconfig >= 1:0.20
-BuildRequires:	python >= 1:2.7
-BuildRequires:	python-Cython >= 0.19
-BuildRequires:	python-devel >= 1:2.7
-BuildRequires:	python-setuptools
+BuildRequires:	python3 >= 1:3.8
+BuildRequires:	python3-Cython >= 0.19
+BuildRequires:	python3-devel >= 1:3.8
+BuildRequires:	python3-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.734
 BuildRequires:	sed >= 4.0
@@ -99,17 +99,18 @@ Static libnghttp2 library.
 %description static -l pl.UTF-8
 Statyczna biblioteka libnghttp2.
 
-%package -n python-nghttp2
+%package -n python3-nghttp2
 Summary:	Python binding to nghttp2 library
 Summary(pl.UTF-8):	Wiązanie Pythona do biblioteki nghttp2
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
-Requires:	python-libs >= 1:2.7
+Requires:	python3-libs >= 1:3.8
+Obsoletes:	python-nghttp2 < 1.43.0
 
-%description -n python-nghttp2
+%description -n python3-nghttp2
 Python binding to nghttp2 library.
 
-%description -n python-nghttp2 -l pl.UTF-8
+%description -n python3-nghttp2 -l pl.UTF-8
 Wiązanie Pythona do biblioteki nghttp2.
 
 %package asio
@@ -156,7 +157,7 @@ Statyczna biblioteka libnghttp2_asio.
 %patch0 -p1
 %patch1 -p1
 
-%{__sed} -i -e '1s,/usr/bin/env python,%{__python},' script/fetch-ocsp-response
+%{__sed} -i -e '1s,/usr/bin/env python3,%{__python3},' script/fetch-ocsp-response
 
 %build
 %{__libtoolize}
@@ -233,10 +234,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libnghttp2.a
 %endif
 
-%files -n python-nghttp2
+%files -n python3-nghttp2
 %defattr(644,root,root,755)
-%attr(755,root,root) %{py_sitedir}/nghttp2.so
-%{py_sitedir}/python_nghttp2-%{version}-py*.egg-info
+%attr(755,root,root) %{py3_sitedir}/nghttp2.cpython-*.so
+%{py3_sitedir}/python_nghttp2-%{version}-py*.egg-info
 
 %if %{with asio}
 %files asio
