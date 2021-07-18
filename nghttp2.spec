@@ -172,6 +172,7 @@ Statyczna biblioteka libnghttp2_asio.
 	--enable-python-bindings \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static} \
+	--with-cython=/usr/bin/cython3 \
 	--without-jemalloc
 
 %{__make}
