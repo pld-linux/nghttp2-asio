@@ -2,6 +2,8 @@
 #
 # Conditional build:
 %bcond_without	asio		# libnghttp2_asio C++ library
+%bcond_with	http3		# experimental HTTP/3 support
+%bcond_with	libbpf		# BPF support (requires CC=clang)
 %bcond_without	static_libs	# static libraries
 %bcond_without	tests		# "make check" call
 
@@ -24,13 +26,17 @@ BuildRequires:	automake
 %{?with_asio:BuildRequires:	boost-devel >= 1.54.0}
 BuildRequires:	c-ares-devel >= 1.7.5
 BuildRequires:	jansson-devel >= 2.5
+%{?with_libbpf:BuildRequires:	libbpf-devel >= 0.7.0}
 BuildRequires:	libev-devel
 # for examples
 BuildRequires:	libevent-devel >= 2.0.8
-BuildRequires:	libstdc++-devel >= 6:4.7
+BuildRequires:	libstdc++-devel >= 6:5
 BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	libxml2-devel >= 1:2.6.26
+%{?with_http3:BuildRequires:	nghttp3-devel >= 0.2.0}
+%{?with_http3:BuildRequires:	ngtcp2-devel >= 0.2.0}
 BuildRequires:	openssl-devel >= 1.0.1
+%{?with_http3:BuildRequires:	openssl-devel(quic)}
 BuildRequires:	pkgconfig >= 1:0.20
 BuildRequires:	python3 >= 1:3.8
 BuildRequires:	python3-Cython >= 0.19
@@ -132,7 +138,7 @@ Summary(pl.UTF-8):	Plik nagłówkowy biblioteki nghttp2_asio
 Group:		Development/Libraries
 Requires:	%{name}-asio = %{version}-%{release}
 Requires:	%{name}-devel = %{version}-%{release}
-Requires:	libstdc++-devel >= 6:4.7
+Requires:	libstdc++-devel >= 6:5
 
 %description asio-devel
 Header file for nghttp2_asio library.
@@ -169,11 +175,13 @@ Statyczna biblioteka libnghttp2_asio.
 	--enable-app \
 	%{?with_asio:--enable-asio-lib} \
 	--enable-hpack-tools \
+	%{?with_http3:--enable-http3} \
 	--enable-python-bindings \
 	--disable-silent-rules \
 	%{!?with_static_libs:--disable-static} \
 	--with-cython=/usr/bin/cython3 \
-	--without-jemalloc
+	--without-jemalloc \
+	%{?with_libbpf:--with-libbpf}
 
 %{__make}
 
