@@ -5,6 +5,7 @@
 %bcond_with	http3		# experimental HTTP/3 support
 %bcond_with	libbpf		# BPF support (requires CC=clang)
 %bcond_without	static_libs	# static libraries
+%bcond_without	systemd		# don't include systemd support
 %bcond_without	tests		# "make check" call
 
 Summary:	HTTP/2.0 C library
@@ -45,7 +46,7 @@ BuildRequires:	python3-setuptools
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.734
 BuildRequires:	sed >= 4.0
-BuildRequires:	systemd-devel >= 1:209
+%{?with_systemd:BuildRequires:	systemd-devel >= 1:209}
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 BuildRequires:	zlib-devel >= 1.2.3
